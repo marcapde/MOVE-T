@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = binding.viewPager;
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = binding.tabs;
+        tabs.addTab(tabs.newTab().setText("Home"));
+        tabs.addTab(tabs.newTab().setText("Calendar"));
+        tabs.addTab(tabs.newTab().setText("Exercises"));
+
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = binding.fab;
 
