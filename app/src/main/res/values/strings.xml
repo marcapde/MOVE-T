@@ -1,7 +1,3 @@
 <resources>
     <string name="app_name">MOVE-T</string>
-    <string name="tab_text_1">Home</string>
-    <string name="tab_text_2">Calendar</string>
-    <string name="tab_text_3">Profile</string>
-
 </resources>
