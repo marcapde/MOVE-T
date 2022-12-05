@@ -57,5 +57,6 @@ public class MainActivity extends AppCompatActivity {
                                 date_view.setText(Date);
                             }
                         });
+
     }
 }
