@@ -17,6 +17,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener)
     {
         this.daysOfMonth = daysOfMonth;
+
         this.onItemListener = onItemListener;
     }
 

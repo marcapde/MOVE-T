@@ -39,10 +39,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private void setMonthView()
     {
         monthYearText.setText(monthYearFromDate(selectedDate));
+
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
+
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         int daysInMonth = yearMonth.lengthOfMonth();
 
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue()-1;
 
         for(int i = 1; i <= 42; i++)
         {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 daysInMonthArray.add("");
             }
             else
-            {
+            {º
                 daysInMonthArray.add(String.valueOf(i - dayOfWeek));
             }
         }
