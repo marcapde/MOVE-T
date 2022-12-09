@@ -1,0 +1,47 @@
+package com.example.move_t;
+
+public class ListElement {
+    public String color;
+    public String name;
+    public String desc;
+    public boolean checked;
+
+    public ListElement(String color, String name, String desc, boolean checked) {
+        this.color = color;
+        this.name = name;
+        this.desc = desc;
+        this.checked = checked;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+}
