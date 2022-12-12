@@ -77,6 +77,7 @@ public class EventForm extends AppCompatActivity {
         // f5 db
         id_selected.add(item.id);
         //showCards();
+        //this upp commented
       }
     });
     RecyclerView recyclerView = findViewById(R.id.EventsrecyclerView);
