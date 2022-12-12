@@ -35,6 +35,8 @@ public class EventForm extends AppCompatActivity {
   public String name;
   public String desc;
   public boolean checked = false;
+  public int id;
+  public ArrayList<Integer> id_selected;
   List<ListElement> elements;
 
   @Override
@@ -42,7 +44,7 @@ public class EventForm extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.event_form);
     elements = new ArrayList<>();
-
+    id_selected = new ArrayList<Integer>();
     readJson();
     showCards();
 
@@ -55,9 +57,10 @@ public class EventForm extends AppCompatActivity {
 
       for (int i = 0; i < jsonArray.length(); ++i) {
         JSONObject itemObj = jsonArray.getJSONObject(i);
+        id = itemObj.getInt("id");
         name = itemObj.getString("title");
         desc = itemObj.getString("desc");
-        elements.add(new ListElement(color,name,desc,checked));
+        elements.add(new ListElement(color,name,desc,checked,id));
       }
 
     }catch (Exception e){
@@ -67,7 +70,15 @@ public class EventForm extends AppCompatActivity {
   }
 
   public void showCards() {
-    ListAdapter listAdapter = new ListAdapter(elements,(EventForm) this);
+    ListAdapter listAdapter = new ListAdapter(elements, (EventForm) this, new ListAdapter.OnItemClickListener() {
+      @Override
+      public void onItemClick(ListElement item) {
+        item.checked = !item.checked;
+        // f5 db
+        id_selected.add(item.id);
+        showCards();
+      }
+    });
     RecyclerView recyclerView = findViewById(R.id.EventsrecyclerView);
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));

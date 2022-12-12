@@ -1,16 +1,20 @@
 package com.example.move_t;
 
-public class ListElement {
+import java.io.Serializable;
+
+public class ListElement implements Serializable {
+    public int id;
     public String color;
     public String name;
     public String desc;
     public boolean checked;
 
-    public ListElement(String color, String name, String desc, boolean checked) {
+    public ListElement(String color, String name, String desc, boolean checked, int id) {
         this.color = color;
         this.name = name;
         this.desc = desc;
         this.checked = checked;
+        this.id = id;
     }
 
     public String getColor() {

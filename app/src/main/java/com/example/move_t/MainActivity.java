@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //            printEvents();
             date_view.setText(Date);
             selectedDate = Date;
-            init();
+            //init();
             Button addEvent_btn = findViewById(R.id.addEvent);
             addEvent_btn.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -95,22 +95,22 @@ public class MainActivity extends AppCompatActivity {
 
 
   }
-  public void init(){
-    Button btnm = findViewById(R.id.addEvent);btnm.setText("works");
-    System.out.println("******************");
-
-    elements = new ArrayList<>();
-    elements.add(new ListElement("#775447","Ejercicio1","LOREM IPSUM DOLOR I MAE",true));
-    elements.add(new ListElement("#775447","Ejercicio2","LOREM IPSUM DOLOR I MAE",false));
-    elements.add(new ListElement("#775447","Ejercicio3","LOREM IPSUM DOLOR I MAE",true));
-    elements.add(new ListElement("#775447","Ejercicio4","LOREM IPSUM DOLOR I MAE",false));
-
-    ListAdapter listAdapter = new ListAdapter(elements,this);
-    RecyclerView recyclerView = findViewById(R.id.listReciclerView);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    recyclerView.setAdapter(listAdapter);
-    System.out.println("******************");
-
-  }
+//  public void init(){
+//    Button btnm = findViewById(R.id.addEvent);btnm.setText("works");
+//    System.out.println("******************");
+//
+//    elements = new ArrayList<>();
+//    elements.add(new ListElement("#775447","Ejercicio1","LOREM IPSUM DOLOR I MAE",true));
+//    elements.add(new ListElement("#775447","Ejercicio2","LOREM IPSUM DOLOR I MAE",false));
+//    elements.add(new ListElement("#775447","Ejercicio3","LOREM IPSUM DOLOR I MAE",true));
+//    elements.add(new ListElement("#775447","Ejercicio4","LOREM IPSUM DOLOR I MAE",false));
+//
+////    ListAdapter listAdapter = new ListAdapter(elements,this);
+//    RecyclerView recyclerView = findViewById(R.id.listReciclerView);
+//    recyclerView.setHasFixedSize(true);
+//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//    recyclerView.setAdapter(listAdapter);
+//    System.out.println("******************");
+//
+//  }
 }
