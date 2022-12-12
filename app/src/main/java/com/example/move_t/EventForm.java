@@ -76,13 +76,12 @@ public class EventForm extends AppCompatActivity {
         item.checked = !item.checked;
         // f5 db
         id_selected.add(item.id);
-        showCards();
+        //showCards();
       }
     });
     RecyclerView recyclerView = findViewById(R.id.EventsrecyclerView);
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    System.out.println("HOLAA");
     recyclerView.setAdapter(listAdapter);
   }
 

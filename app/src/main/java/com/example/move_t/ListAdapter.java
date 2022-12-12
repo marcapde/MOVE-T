@@ -69,6 +69,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
               @Override
               public void onClick(View view) {
                 listener.onItemClick(item);
+                checkSw.setChecked(item.isChecked());
               }
             });
         }
