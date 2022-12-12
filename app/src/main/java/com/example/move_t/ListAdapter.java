@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
@@ -46,7 +47,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
     public void setItems(List<ListElement> items){mData = items;}
 
+    public List<Integer> getSelecteds(){
+        List<Integer> list = new ArrayList<Integer>();
 
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).isChecked()){
+                list.add(mData.get(i).id);
+            }
+        }
+        return list;
+    }
+
+    public void cleanSelecteds(){
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).isChecked()){
+                mData.get(i).setChecked(false);
+            }
+        }
+    }
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
         TextView name,extra;
@@ -58,6 +76,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             name = itemView.findViewById(R.id.nameTextView);
             extra = itemView.findViewById(R.id.extraTextView);
             checkSw = itemView.findViewById(R.id.checkSwitch);
+
         }
 
         void bindData(final ListElement item){
@@ -65,6 +84,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             name.setText(item.getName());
             extra.setText(item.getDesc());
             checkSw.setChecked(item.isChecked());
+            checkSw.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.setChecked(checkSw.isChecked());
+                }
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {

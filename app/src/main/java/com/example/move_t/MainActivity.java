@@ -14,9 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //            printEvents();
             date_view.setText(Date);
             selectedDate = Date;
+            showByDate();
             //init();
             Button addEvent_btn = findViewById(R.id.addEvent);
             addEvent_btn.setOnClickListener(new View.OnClickListener() {
@@ -95,22 +103,72 @@ public class MainActivity extends AppCompatActivity {
 
 
   }
-//  public void init(){
-//    Button btnm = findViewById(R.id.addEvent);btnm.setText("works");
-//    System.out.println("******************");
-//
-//    elements = new ArrayList<>();
-//    elements.add(new ListElement("#775447","Ejercicio1","LOREM IPSUM DOLOR I MAE",true));
-//    elements.add(new ListElement("#775447","Ejercicio2","LOREM IPSUM DOLOR I MAE",false));
-//    elements.add(new ListElement("#775447","Ejercicio3","LOREM IPSUM DOLOR I MAE",true));
-//    elements.add(new ListElement("#775447","Ejercicio4","LOREM IPSUM DOLOR I MAE",false));
-//
-////    ListAdapter listAdapter = new ListAdapter(elements,this);
-//    RecyclerView recyclerView = findViewById(R.id.listReciclerView);
-//    recyclerView.setHasFixedSize(true);
-//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//    recyclerView.setAdapter(listAdapter);
-//    System.out.println("******************");
-//
-//  }
+
+  private void showByDate() {
+    elements = new ArrayList<>();
+
+    String ids = ((DataManager)getApplication()).getByDate(Date);
+    String[] idSplited = ids.split(",");
+    getFromJson(idSplited);
+
+    ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+      @Override
+      public void onItemClick(ListElement item) {
+
+      }
+    });
+    System.out.println("idsplited()");
+    System.out.println(idSplited.length);
+    System.out.println("elements.size()");
+
+    System.out.println(elements.size());
+    RecyclerView recyclerView = findViewById(R.id.listRVdate);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(listAdapter);
+  }
+  public void getFromJson(String[] ids){
+    List<String> nameList = new ArrayList<>(Arrays.asList(ids));
+    try{
+      String jsonDataString = readJsonDataFromFile();
+      JSONArray jsonArray = new JSONArray(jsonDataString);
+
+      for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject itemObj = jsonArray.getJSONObject(i);
+        int id = itemObj.getInt("id");
+        if( nameList.contains(String.valueOf(id))){
+          String name = itemObj.getString("title");
+          String desc = itemObj.getString("desc");
+          System.out.println("holafromsaving");
+          elements.add(new ListElement("#775447", name, desc, true, id));
+        }
+      }
+
+    }catch (Exception e){
+      e.printStackTrace();
+
+    }
+  }
+  public String readJsonDataFromFile() throws IOException {
+    InputStream inputStream = null;
+    StringBuilder builder = new StringBuilder();
+
+    try {
+
+      String jsonString = null;
+      inputStream = getResources().openRawResource(R.raw.dummy);
+      BufferedReader bufferedReader = new BufferedReader(
+              new InputStreamReader(inputStream, "UTF-8"));
+
+      while ((jsonString = bufferedReader.readLine()) != null) {
+        builder.append(jsonString);
+      }
+    } finally {
+
+      if (inputStream != null) {
+        inputStream.close();
+      }
+    }
+    return builder.toString();
+  }
 }

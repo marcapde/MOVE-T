@@ -10,51 +10,58 @@ public class DataManager extends Application {
     public myDBHandler dbHandler;
     private SQLiteDatabase sqLiteDatabase;
 
-    void insertDB(ContentValues contentValues){
-        sqLiteDatabase.insert("provaSaveForm",null,contentValues);
-    }
 
-    String provaGET(){
-        String query = "Select * FROM provaSaveForm";
-        try {
-            Cursor cursor = sqLiteDatabase.rawQuery(query,null);
-            cursor.moveToFirst();
-            return cursor.getString(0);
-        }
-        catch (Exception e){
-            return "err";
-        }
+//    boolean can_insert( String date, String hour1, String hour2){
+//        String query = "SELECT date, hour1, hour2 FROM databoard WHERE date='"+date+"' AND " +
+//                "( hour1 >= '"+hour2+"' OR hour2 <= '"+hour1+"')";
+//        Cursor cursor = sqLiteDatabase.rawQuery(query,null);
+//        cursor.moveToFirst();
+//
+//        return cursor.getCount() == 0;
+//    }
+
+    void insertDB(ContentValues contentValues){
+//        System.out.printf("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+//
+//        String hour1 = (String) contentValues.get("hour1");
+//        String hour2 = (String) contentValues.get("hour2");
+//        System.out.printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+
+
+//        if(hour2.compareTo(hour1)>0 && can_insert((String)contentValues.get("date"),hour1,hour2)){
+            // aqui pon lo tuyo 🙂
+            System.out.printf("guardaddodododododododododdododododod");
+            sqLiteDatabase.insert("databoard",null,contentValues);
+//        }
     }
 
     String getByDate(String date){
-        String query = "Select date,field1,field2 FROM provaSaveForm WHERE date='"+date+"'";
+        String query = "Select date,ids FROM databoard WHERE date='"+date+"'";
 
         try {
             Cursor cursor = sqLiteDatabase.rawQuery(query,null);
             cursor.moveToFirst();
-            String answer = "";
-            while (cursor.moveToNext()){
-                for(int i = 1; i<cursor.getColumnCount();i++){
-                    answer += cursor.getString(i);
-                    answer += " ";
-                }
-                answer+="\n";
-            }
+            String answer = cursor.getString(1);
             return answer;
         }
         catch (Exception e){
-            return query;
+            e.printStackTrace();
+            return "";
         }
     }
+
 
     @Override
     public void onCreate() {
 
         super.onCreate();
         try{
-            dbHandler = new myDBHandler(this, "provaSaveForm", null, 1);
+            dbHandler = new myDBHandler(this, "databoard", null, 1);
             sqLiteDatabase = dbHandler.getWritableDatabase();
-            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS  provaSaveForm (date TEXT,field1 TEXT, field2 TEXT)");
+            sqLiteDatabase.execSQL("DROP TABLE databoard");
+
+            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS  databoard (date TEXT,ids TEXT)");
         }catch(Exception e){
             e.printStackTrace();
         }

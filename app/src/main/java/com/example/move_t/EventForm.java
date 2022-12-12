@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,13 +39,14 @@ public class EventForm extends AppCompatActivity {
   public int id;
   public ArrayList<Integer> id_selected;
   List<ListElement> elements;
-
+  ListAdapter listAdapter;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.event_form);
     elements = new ArrayList<>();
     id_selected = new ArrayList<Integer>();
+
     readJson();
     showCards();
 
@@ -69,8 +71,9 @@ public class EventForm extends AppCompatActivity {
     }
   }
 
+
   public void showCards() {
-    ListAdapter listAdapter = new ListAdapter(elements, (EventForm) this, new ListAdapter.OnItemClickListener() {
+    listAdapter = new ListAdapter(elements, (EventForm) this, new ListAdapter.OnItemClickListener() {
       @Override
       public void onItemClick(ListElement item) {
         item.checked = !item.checked;
@@ -91,7 +94,6 @@ public class EventForm extends AppCompatActivity {
     StringBuilder builder = new StringBuilder();
 
     try{
-      System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmm");
 
       String jsonString = null;
       inputStream = getResources().openRawResource(R.raw.dummy);
@@ -100,10 +102,8 @@ public class EventForm extends AppCompatActivity {
 
       while((jsonString = bufferedReader.readLine()) != null){
         builder.append(jsonString);
-        System.out.println(jsonString);
       }
     } finally {
-      System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
       if(inputStream!=null){
         inputStream.close();
@@ -112,5 +112,34 @@ public class EventForm extends AppCompatActivity {
     return builder.toString();
 
   }
+  public void saveSelectedEvents(View view){
+    try {
+      List<Integer> list = listAdapter.getSelecteds();
+//      EditText hora1 = (EditText) findViewById(R.id.BegintTme);
+//      EditText hora2 = (EditText) findViewById(R.id.EndTime);
+//
+//      String h1 = hora1.getText().toString();
+//      String h2 = hora2.getText().toString();
+
+      ContentValues contentValues = new ContentValues();
+      String ids = "";
+      for (int i = 0; i < list.size(); i++) {
+        ids += list.get(i).toString();
+
+        ids += ",";
+      }
+      contentValues.put("date", getIntent().getStringExtra("SelectedDate"));
+      contentValues.put("ids", ids);
+//      contentValues.put("hour1", h1);
+//      contentValues.put("hour2", h2);
+
+      ((DataManager) getApplication()).insertDB(contentValues);
+      listAdapter.cleanSelecteds();
+    }catch (Exception e){
+      e.printStackTrace();
+
+    }
+  }
+
 
 }
