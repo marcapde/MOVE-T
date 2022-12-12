@@ -11,29 +11,26 @@ public class DataManager extends Application {
     private SQLiteDatabase sqLiteDatabase;
 
 
-//    boolean can_insert( String date, String hour1, String hour2){
-//        String query = "SELECT date, hour1, hour2 FROM databoard WHERE date='"+date+"' AND " +
-//                "( hour1 >= '"+hour2+"' OR hour2 <= '"+hour1+"')";
-//        Cursor cursor = sqLiteDatabase.rawQuery(query,null);
-//        cursor.moveToFirst();
-//
-//        return cursor.getCount() == 0;
-//    }
+    boolean can_insert( String date, String hour1, String hour2){
+        String query = "SELECT date, hour1, hour2 FROM databoard WHERE date='"+date+"' AND " +
+                "( hour1 >= '"+hour2+"' OR hour2 <= '"+hour1+"')";
+        Cursor cursor = sqLiteDatabase.rawQuery(query,null);
+        cursor.moveToFirst();
+
+        return cursor.getCount() == 0;
+    }
 
     void insertDB(ContentValues contentValues){
-//        System.out.printf("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-//
-//        String hour1 = (String) contentValues.get("hour1");
-//        String hour2 = (String) contentValues.get("hour2");
-//        System.out.printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        String hour1 = (String) contentValues.get("hour1");
+        String hour2 = (String) contentValues.get("hour2");
 
 
 
-//        if(hour2.compareTo(hour1)>0 && can_insert((String)contentValues.get("date"),hour1,hour2)){
+        if(hour2.compareTo(hour1)>0 && can_insert((String)contentValues.get("date"),hour1,hour2)){
             // aqui pon lo tuyo 🙂
-            System.out.printf("guardaddodododododododododdododododod");
             sqLiteDatabase.insert("databoard",null,contentValues);
-//        }
+        }
     }
 
     String getByDate(String date){
@@ -61,7 +58,7 @@ public class DataManager extends Application {
             sqLiteDatabase = dbHandler.getWritableDatabase();
             sqLiteDatabase.execSQL("DROP TABLE databoard");
 
-            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS  databoard (date TEXT,ids TEXT)");
+            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS  databoard (date TEXT,ids TEXT, hour1 TEXT , hour2 TEXT)");
         }catch(Exception e){
             e.printStackTrace();
         }

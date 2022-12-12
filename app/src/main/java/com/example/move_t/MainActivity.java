@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -105,27 +106,27 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void showByDate() {
-    elements = new ArrayList<>();
+    try {
+      elements = new ArrayList<>();
 
-    String ids = ((DataManager)getApplication()).getByDate(Date);
-    String[] idSplited = ids.split(",");
-    getFromJson(idSplited);
+      String ids = ((DataManager) getApplication()).getByDate(Date);
+      String[] idSplited = ids.split(",");
+      getFromJson(idSplited);
 
-    ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
-      @Override
-      public void onItemClick(ListElement item) {
+      ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(ListElement item) {
 
-      }
-    });
-    System.out.println("idsplited()");
-    System.out.println(idSplited.length);
-    System.out.println("elements.size()");
+        }
+      });
+      listAdapter.shown = false;
+      RecyclerView recyclerView = findViewById(R.id.listRVdate);
+      recyclerView.setHasFixedSize(true);
+      recyclerView.setLayoutManager(new LinearLayoutManager(this));
+      recyclerView.setAdapter(listAdapter);
+    }catch (Exception e){
 
-    System.out.println(elements.size());
-    RecyclerView recyclerView = findViewById(R.id.listRVdate);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    recyclerView.setAdapter(listAdapter);
+    }
   }
   public void getFromJson(String[] ids){
     List<String> nameList = new ArrayList<>(Arrays.asList(ids));
@@ -139,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         if( nameList.contains(String.valueOf(id))){
           String name = itemObj.getString("title");
           String desc = itemObj.getString("desc");
-          System.out.println("holafromsaving");
           elements.add(new ListElement("#775447", name, desc, true, id));
         }
       }

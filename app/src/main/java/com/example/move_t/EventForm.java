@@ -115,23 +115,22 @@ public class EventForm extends AppCompatActivity {
   public void saveSelectedEvents(View view){
     try {
       List<Integer> list = listAdapter.getSelecteds();
-//      EditText hora1 = (EditText) findViewById(R.id.BegintTme);
-//      EditText hora2 = (EditText) findViewById(R.id.EndTime);
-//
-//      String h1 = hora1.getText().toString();
-//      String h2 = hora2.getText().toString();
+      EditText hora1 = (EditText) findViewById(R.id.BegintTme);
+      EditText hora2 = (EditText) findViewById(R.id.EndTime);
+
+      String h1 = hora1.getText().toString();
+      String h2 = hora2.getText().toString();
 
       ContentValues contentValues = new ContentValues();
       String ids = "";
       for (int i = 0; i < list.size(); i++) {
         ids += list.get(i).toString();
-
         ids += ",";
       }
       contentValues.put("date", getIntent().getStringExtra("SelectedDate"));
       contentValues.put("ids", ids);
-//      contentValues.put("hour1", h1);
-//      contentValues.put("hour2", h2);
+      contentValues.put("hour1", h1);
+      contentValues.put("hour2", h2);
 
       ((DataManager) getApplication()).insertDB(contentValues);
       listAdapter.cleanSelecteds();

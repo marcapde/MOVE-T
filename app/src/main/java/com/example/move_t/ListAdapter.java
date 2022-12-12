@@ -19,6 +19,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<ListElement> mData;
     private LayoutInflater mInfrater;
     private Context context;
+    public boolean shown = true;
 
     final ListAdapter.OnItemClickListener listener;
     public interface OnItemClickListener {
@@ -90,6 +91,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     item.setChecked(checkSw.isChecked());
                 }
             });
+            if(!shown)
+            {
+                checkSw.setVisibility(View.INVISIBLE);
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
@@ -99,10 +104,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
               }
             });
         }
-
-
-
-
     }
 
 
