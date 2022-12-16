@@ -46,7 +46,6 @@ public class EventForm extends AppCompatActivity {
     setContentView(R.layout.event_form);
     elements = new ArrayList<>();
     id_selected = new ArrayList<Integer>();
-
     readJson();
     showCards();
 

@@ -57,7 +57,6 @@ public class DataManager extends Application {
             dbHandler = new myDBHandler(this, "databoard", null, 1);
             sqLiteDatabase = dbHandler.getWritableDatabase();
             sqLiteDatabase.execSQL("DROP TABLE databoard");
-
             sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS  databoard (date TEXT,ids TEXT, hour1 TEXT , hour2 TEXT)");
         }catch(Exception e){
             e.printStackTrace();

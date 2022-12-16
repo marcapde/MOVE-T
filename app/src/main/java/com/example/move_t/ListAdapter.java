@@ -94,6 +94,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             if(!shown)
             {
                 checkSw.setVisibility(View.INVISIBLE);
+                checkSw.setClickable(false);
             }
             itemView.setOnClickListener(new View.OnClickListener() {
               @Override

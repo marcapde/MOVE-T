@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
       });
+
       listAdapter.shown = false;
       RecyclerView recyclerView = findViewById(R.id.listRVdate);
       recyclerView.setHasFixedSize(true);
