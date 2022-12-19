@@ -1,7 +1,9 @@
 package com.example.move_t;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,28 +42,70 @@ public class EventForm extends AppCompatActivity {
   public ArrayList<Integer> id_selected;
   List<ListElement> elements;
   ListAdapter listAdapter;
+  String[] idSplited;
+  EditText t;
+  TextView tw;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.event_form);
     elements = new ArrayList<>();
     id_selected = new ArrayList<Integer>();
-    readJson();
-    showCards();
 
+    if(getIntent().getExtras().getBoolean("istolistonly")){
+      t = (EditText) findViewById(R.id.eventName);
+      tw = (TextView) findViewById(R.id.titleEvent);
+      t.setVisibility(View.INVISIBLE);
+      tw.setVisibility(View.VISIBLE);
+      Button bt = findViewById(R.id.saveForm_btn);
+      bt.setVisibility(View.INVISIBLE);
+      readJson();
+      showCardsActivity();
+    }else {
+      readJson();
+      showCards();
+    }
   }
+
+  public void showCardsActivity(){
+    EditText bgtime = findViewById(R.id.BegintTme);
+    bgtime.setVisibility(View.GONE);
+    bgtime = findViewById(R.id.EndTime);
+    bgtime.setVisibility(View.GONE);
+
+    showCards();
+  }
+
 
   public void readJson() {
     try{
       String jsonDataString = readJsonDataFromFile();
       JSONArray jsonArray = new JSONArray(jsonDataString);
+      if(getIntent().getExtras().getBoolean("istolistonly")) {
+        String selectedDate = getIntent().getStringExtra("SelectedDate");
+        String ids = ((DataManager) getApplication()).getByDate(selectedDate,getIntent().getStringExtra("hour1"),getIntent().getStringExtra("hour2"));
+        idSplited = ids.split(",");
 
+         tw.setText(((DataManager) getApplication()).getName(selectedDate,getIntent().getStringExtra("hour1"),getIntent().getStringExtra("hour2")));
+      }
       for (int i = 0; i < jsonArray.length(); ++i) {
         JSONObject itemObj = jsonArray.getJSONObject(i);
         id = itemObj.getInt("id");
-        name = itemObj.getString("title");
-        desc = itemObj.getString("desc");
-        elements.add(new ListElement(color,name,desc,checked,id));
+
+        if(getIntent().getExtras().getBoolean("istolistonly")){
+          List<String> nameList = new ArrayList<>(Arrays.asList(idSplited));
+          if( nameList.contains(String.valueOf(id))){
+            System.out.println("HOLA FROM FORMULALALAALALALALALALALAL");
+
+            name = itemObj.getString("title");
+            desc = itemObj.getString("desc");
+            elements.add(new ListElement(color, name, desc, checked, id));
+          }
+        }else {
+          name = itemObj.getString("title");
+          desc = itemObj.getString("desc");
+          elements.add(new ListElement(color, name, desc, checked, id));
+        }
       }
 
     }catch (Exception e){
@@ -82,7 +126,16 @@ public class EventForm extends AppCompatActivity {
         //this upp commented
       }
     });
-    RecyclerView recyclerView = findViewById(R.id.EventsrecyclerView);
+    RecyclerView recyclerView;
+    if(getIntent().getExtras().getBoolean("istolistonly")){
+      listAdapter.shown = false;
+      recyclerView= findViewById(R.id.EventsrecyclerView2);
+
+    }
+    else{
+      recyclerView= findViewById(R.id.EventsrecyclerView);
+
+    }
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(listAdapter);
@@ -95,6 +148,7 @@ public class EventForm extends AppCompatActivity {
     try{
 
       String jsonString = null;
+
       inputStream = getResources().openRawResource(R.raw.dummy);
       BufferedReader bufferedReader = new BufferedReader(
               new InputStreamReader(inputStream,"UTF-8"));
@@ -120,24 +174,83 @@ public class EventForm extends AppCompatActivity {
       String h1 = hora1.getText().toString();
       String h2 = hora2.getText().toString();
 
+      String strDate = getIntent().getStringExtra("SelectedDate");
+      int date = ((DataManager)getApplication()).date2int(strDate);
+      if (!check_parameters(list,date,h1,h2)) return;
+
+
       ContentValues contentValues = new ContentValues();
       String ids = "";
       for (int i = 0; i < list.size(); i++) {
         ids += list.get(i).toString();
         ids += ",";
       }
-      contentValues.put("date", getIntent().getStringExtra("SelectedDate"));
+      contentValues.put("date", date);
+      EditText nameT = findViewById(R.id.eventName);
+      String nameTxt = nameT.getText().toString();
+      contentValues.put("name", nameTxt.equals("") ? ("Event "+getIntent().getStringExtra("SelectedDate")):nameTxt);
       contentValues.put("ids", ids);
-      contentValues.put("hour1", h1);
-      contentValues.put("hour2", h2);
+      contentValues.put("hour1", ((DataManager)getApplication()).hour2int(h1));
+      contentValues.put("hour2", ((DataManager)getApplication()).hour2int(h2));
 
       ((DataManager) getApplication()).insertDB(contentValues);
       listAdapter.cleanSelecteds();
+
+      goBack();
+
+
+
     }catch (Exception e){
       e.printStackTrace();
 
     }
   }
+
+  private void goBack() {
+    Intent intent = new Intent(this,MainActivity.class);
+    this.finish();
+    startActivity(intent);
+  }
+
+
+  public boolean check_parameters (List<Integer> list, int date,String h1, String h2){
+    int hh1,hh2;
+    try {
+      hh1 = ((DataManager)getApplication()).hour2int(h1);
+      hh2 = ((DataManager)getApplication()).hour2int(h2);
+    }catch (Exception e){
+      popup("Invalid hour format, use 13:15 format");
+      return false;
+    }
+    if (hh1 >= hh2) {
+      popup("Beggining hour can not be greater than end hour");
+      return false;
+    }
+    if (list.size() == 0){
+      popup("No exercices selected");
+      return false;
+    }if (!((DataManager)getApplication()).can_insert(date,hh1,hh2)){
+      popup("Event already exists in this time, please try another");
+      return false;
+    }
+    return true;
+
+  }
+  public void popup(String message){
+    AlertDialog.Builder builder = new AlertDialog.Builder(EventForm.this);
+    builder.setCancelable(true);
+    builder.setTitle("Something went wrong");
+    builder.setMessage(message);
+    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialogInterface, int i) {
+        dialogInterface.cancel();
+      }
+    });
+    builder.show();
+  }
+
+
 
 
 }

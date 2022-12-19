@@ -6,27 +6,42 @@
     android:layout_height="match_parent"
     android:onClick="saveSelectedEvents">
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/EventsrecyclerView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exercise List"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_height="653dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.987" />
+
+    <EditText
+        android:id="@+id/eventName"
+        android:layout_width="366dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="NameEvent"
+        android:inputType="textShortMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.348"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/EventsrecyclerView"
         android:layout_width="wrap_content"
-        android:layout_height="538dp"
+        android:layout_height="500dp"
         android:layout_marginTop="24dp"
         app:layout_constraintBottom_toTopOf="@+id/saveForm_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EndTime"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/saveForm_btn"
@@ -41,25 +56,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edittextform"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-100dp" />
-
-    <EditText
         android:id="@+id/BegintTme"
         android:layout_width="158dp"
         android:layout_height="44dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="100dp"
         android:ems="10"
-        android:hint="Begin Time"
+        android:hint="0:00"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.011"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,13 +72,29 @@
         android:id="@+id/EndTime"
         android:layout_width="158dp"
         android:layout_height="44dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="100dp"
         android:ems="10"
-        android:hint="End Time"
+        android:hint="1:00"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintHorizontal_bias="0.645"
         app:layout_constraintStart_toEndOf="@+id/BegintTme"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleEvent"
+        android:layout_width="265dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/eventName"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

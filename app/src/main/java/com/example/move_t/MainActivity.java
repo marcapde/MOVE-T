@@ -1,6 +1,7 @@
 package com.example.move_t;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,9 +24,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
   CalendarView calendar;
   TextView date_view;
   public String selectedDate;
-  String Date;
+  String date;
   List<ListElement> elements;
 //   public void printEvents(){
 //    String str = ((DataManager)getApplication()).getByDate(Date);
@@ -60,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
       findViewById(R.id.date_view);
     calendar.setFirstDayOfWeek(2);
     // Add Listener in calendar
+
+
+
+    Date c = Calendar.getInstance().getTime();
+    System.out.println("Current time => " + c);
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    selectedDate = df.format(c);
+    date_view.setText(selectedDate);
+    //showByDate();
+    showActivities();
     calendar
       .setOnDateChangeListener(
         new CalendarView
@@ -79,44 +94,58 @@ public class MainActivity extends AppCompatActivity {
             // format in String type Variable
             // Add 1 in month because month
             // index is start with 0
-            Date = dayOfMonth + "-"
+            selectedDate = dayOfMonth + "-"
               + (month + 1) + "-" + year;
             // set this date in TextView for Display
 //            printEvents();
-            date_view.setText(Date);
-            selectedDate = Date;
-            showByDate();
+            date_view.setText(selectedDate);
+            showActivities();
             //init();
-            Button addEvent_btn = findViewById(R.id.addEvent);
-            addEvent_btn.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                addEvent_btn.setText("works");
-                Intent intent = new Intent(MainActivity.this,EventForm.class );
-                intent.putExtra("SelectedDate", Date);
-                startActivity(intent);
 
-
-              }
-            });
           }
         });
 
+      Button addEvent_btn = findViewById(R.id.addEvent);
+      addEvent_btn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent = new Intent(MainActivity.this,EventForm.class );
+          intent.putExtra("SelectedDate", selectedDate);
 
+          startActivity(intent);
+        }
+      });
   }
 
-  private void showByDate() {
+
+
+
+  public void showActivities(){
     try {
       elements = new ArrayList<>();
 
-      String ids = ((DataManager) getApplication()).getByDate(Date);
-      String[] idSplited = ids.split(",");
-      getFromJson(idSplited);
+      List<ContentValues> infoList = ((DataManager) getApplication()).getByDate2(((DataManager)getApplication()).date2int(selectedDate));
+      for (int i = 0; i < infoList.size(); i++) {
+        ContentValues info = infoList.get(i);
+        String h = info.getAsString("hour1") + '-' + info.getAsString("hour2");
+        elements.add(new ListElement("#775447", info.get("name").toString(), h , true, -1));
+        System.out.println(i);
+      }
+
+
 
       ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(ListElement item) {
+          Intent intent = new Intent(MainActivity.this,EventForm.class );
+          intent.putExtra("SelectedDate", selectedDate);
+          intent.putExtra("istolistonly", true);
+          String s = item.desc;
+          String[] ss = s.split("-");
+          intent.putExtra("hour1", ss[0]);
+          intent.putExtra("hour2", ss[1]);
 
+          startActivity(intent);
         }
       });
 
@@ -126,50 +155,10 @@ public class MainActivity extends AppCompatActivity {
       recyclerView.setLayoutManager(new LinearLayoutManager(this));
       recyclerView.setAdapter(listAdapter);
     }catch (Exception e){
-
-    }
-  }
-  public void getFromJson(String[] ids){
-    List<String> nameList = new ArrayList<>(Arrays.asList(ids));
-    try{
-      String jsonDataString = readJsonDataFromFile();
-      JSONArray jsonArray = new JSONArray(jsonDataString);
-
-      for (int i = 0; i < jsonArray.length(); i++) {
-        JSONObject itemObj = jsonArray.getJSONObject(i);
-        int id = itemObj.getInt("id");
-        if( nameList.contains(String.valueOf(id))){
-          String name = itemObj.getString("title");
-          String desc = itemObj.getString("desc");
-          elements.add(new ListElement("#775447", name, desc, true, id));
-        }
-      }
-
-    }catch (Exception e){
+      System.out.println("FALOOOO");
       e.printStackTrace();
-
     }
   }
-  public String readJsonDataFromFile() throws IOException {
-    InputStream inputStream = null;
-    StringBuilder builder = new StringBuilder();
 
-    try {
 
-      String jsonString = null;
-      inputStream = getResources().openRawResource(R.raw.dummy);
-      BufferedReader bufferedReader = new BufferedReader(
-              new InputStreamReader(inputStream, "UTF-8"));
-
-      while ((jsonString = bufferedReader.readLine()) != null) {
-        builder.append(jsonString);
-      }
-    } finally {
-
-      if (inputStream != null) {
-        inputStream.close();
-      }
-    }
-    return builder.toString();
-  }
 }
