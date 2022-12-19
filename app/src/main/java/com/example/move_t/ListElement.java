@@ -8,13 +8,14 @@ public class ListElement implements Serializable {
     public String name;
     public String desc;
     public boolean checked;
-
-    public ListElement(String color, String name, String desc, boolean checked, int id) {
+    public String imgName;
+    public ListElement(String color, String name, String desc, boolean checked, int id,String imgName) {
         this.color = color;
         this.name = name;
         this.desc = desc;
         this.checked = checked;
         this.id = id;
+        this.imgName = imgName;
     }
 
     public String getColor() {

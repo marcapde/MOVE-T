@@ -70,6 +70,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         ImageView iconImage;
         TextView name,extra;
         Switch checkSw;
+        ImageView ivw;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -77,6 +78,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             name = itemView.findViewById(R.id.nameTextView);
             extra = itemView.findViewById(R.id.extraTextView);
             checkSw = itemView.findViewById(R.id.checkSwitch);
+
+            ivw = itemView.findViewById(R.id.iconImageView);
+//            ivw.setImageDrawable(itemView.getResources().getDrawable(R.drawable.chest));
 
         }
 
@@ -91,11 +95,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     item.setChecked(checkSw.isChecked());
                 }
             });
+
             if(!shown)
             {
                 checkSw.setVisibility(View.INVISIBLE);
                 checkSw.setClickable(false);
             }
+            ivw.setImageResource(itemView.getResources().getIdentifier(item.imgName,"drawable", itemView.getContext().getPackageName()));
+
             itemView.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {

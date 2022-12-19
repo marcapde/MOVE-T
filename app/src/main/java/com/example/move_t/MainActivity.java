@@ -4,10 +4,12 @@ package com.example.move_t;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -128,10 +130,13 @@ public class MainActivity extends AppCompatActivity {
       for (int i = 0; i < infoList.size(); i++) {
         ContentValues info = infoList.get(i);
         String h = info.getAsString("hour1") + '-' + info.getAsString("hour2");
-        elements.add(new ListElement("#775447", info.get("name").toString(), h , true, -1));
+        ListElement le = new ListElement("#775447", info.get("name").toString(), h , true, -1,"pesa1");
+
+        elements.add(le);
         System.out.println(i);
       }
-
+//      ImageView ivw = findViewById(R.id.iconImageView);
+//      ivw.setImageDrawable(getDrawable(R.drawable.chest));
 
 
       ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {

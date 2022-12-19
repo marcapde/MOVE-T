@@ -3,7 +3,7 @@
       "id": 1,
       "title": "Chest Workout",
       "desc": "Chest Workout info",
-      "img": "path/to/image"
+      "img": "chest"
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "id": 3,
       "title": "Biceps Workout",
       "desc": "Biceps Workout info",
-      "img": "path/to/image"
+      "img": "pesa1"
     },
     {
       "id": 4,

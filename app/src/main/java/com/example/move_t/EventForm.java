@@ -99,12 +99,13 @@ public class EventForm extends AppCompatActivity {
 
             name = itemObj.getString("title");
             desc = itemObj.getString("desc");
-            elements.add(new ListElement(color, name, desc, checked, id));
+            elements.add(new ListElement(color, name, desc, checked, id,itemObj.getString("img")));
           }
         }else {
           name = itemObj.getString("title");
           desc = itemObj.getString("desc");
-          elements.add(new ListElement(color, name, desc, checked, id));
+
+          elements.add(new ListElement(color, name, desc, checked, id,itemObj.getString("img")));
         }
       }
 
