@@ -36,14 +36,15 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-  // Define the variable of CalendarView type
-  // and TextView type;
-  CalendarView calendar;
-  TextView date_view;
-  public String selectedDate;
-  String date;
-  List<ListElement> elements;
-//   public void printEvents(){
+    // Define the variable of CalendarView type
+    // and TextView type;
+    CalendarView calendar;
+    TextView date_view;
+    public String selectedDate;
+    String date;
+    List<ListElement> elements;
+
+    //   public void printEvents(){
 //    String str = ((DataManager)getApplication()).getByDate(Date);
 //    String [] res=str.split("[,]", 0);
 //    str = "";
@@ -52,118 +53,103 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //    txt.setText(str);
 //  }
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    // By ID we can use each component
-    // which id is assign in xml file
-    // use findViewById() to get the
-    // CalendarView and TextView
-    calendar = (CalendarView)
-      findViewById(R.id.calendar);
-    date_view = (TextView)
-      findViewById(R.id.date_view);
-    calendar.setFirstDayOfWeek(2);
-    // Add Listener in calendar
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // By ID we can use each component
+        // which id is assign in xml file
+        // use findViewById() to get the
+        // CalendarView and TextView
+        calendar = (CalendarView)
+                findViewById(R.id.calendar);
+        date_view = (TextView)
+                findViewById(R.id.date_view);
+        calendar.setFirstDayOfWeek(2);
+        // Add Listener in calendar
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        selectedDate = df.format(c);
+        date_view.setText(selectedDate);
+        showActivities();
+        calendar
+                .setOnDateChangeListener(
+                        new CalendarView
+                                .OnDateChangeListener() {
+                            @Override
 
+                            // In this Listener have one method
+                            // and in this method we will
+                            // get the value of DAYS, MONTH, YEARS
+                            public void onSelectedDayChange(
+                                    @NonNull CalendarView view,
+                                    int year,
+                                    int month,
+                                    int dayOfMonth) {
 
+                                // Store the value of date with
+                                // format in String type Variable
+                                // Add 1 in month because month
+                                // index is start with 0
+                                selectedDate = dayOfMonth + "-"
+                                        + (month + 1) + "-" + year;
+                                // set this date in TextView for Display
 
-    Date c = Calendar.getInstance().getTime();
-    System.out.println("Current time => " + c);
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-    selectedDate = df.format(c);
-    date_view.setText(selectedDate);
-    //showByDate();
-    showActivities();
-    calendar
-      .setOnDateChangeListener(
-        new CalendarView
-          .OnDateChangeListener() {
-          @Override
+                                date_view.setText(selectedDate);
+                                showActivities();
 
-          // In this Listener have one method
-          // and in this method we will
-          // get the value of DAYS, MONTH, YEARS
-          public void onSelectedDayChange(
-            @NonNull CalendarView view,
-            int year,
-            int month,
-            int dayOfMonth) {
+                            }
+                        });
 
-            // Store the value of date with
-            // format in String type Variable
-            // Add 1 in month because month
-            // index is start with 0
-            selectedDate = dayOfMonth + "-"
-              + (month + 1) + "-" + year;
-            // set this date in TextView for Display
-//            printEvents();
-            date_view.setText(selectedDate);
-            showActivities();
-            //init();
+        Button addEvent_btn = findViewById(R.id.addEvent);
+        addEvent_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, EventForm.class);
+                intent.putExtra("SelectedDate", selectedDate);
 
-          }
+                startActivity(intent);
+            }
         });
-
-      Button addEvent_btn = findViewById(R.id.addEvent);
-      addEvent_btn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          Intent intent = new Intent(MainActivity.this,EventForm.class );
-          intent.putExtra("SelectedDate", selectedDate);
-
-          startActivity(intent);
-        }
-      });
-  }
-
-
-
-
-  public void showActivities(){
-    try {
-      elements = new ArrayList<>();
-
-      List<ContentValues> infoList = ((DataManager) getApplication()).getByDate2(((DataManager)getApplication()).date2int(selectedDate));
-      for (int i = 0; i < infoList.size(); i++) {
-        ContentValues info = infoList.get(i);
-        String h = info.getAsString("hour1") + '-' + info.getAsString("hour2");
-        ListElement le = new ListElement("#775447", info.get("name").toString(), h , true, -1,"pesa1");
-
-        elements.add(le);
-        System.out.println(i);
-      }
-//      ImageView ivw = findViewById(R.id.iconImageView);
-//      ivw.setImageDrawable(getDrawable(R.drawable.chest));
-
-
-      ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(ListElement item) {
-          Intent intent = new Intent(MainActivity.this,EventForm.class );
-          intent.putExtra("SelectedDate", selectedDate);
-          intent.putExtra("istolistonly", true);
-          String s = item.desc;
-          String[] ss = s.split("-");
-          intent.putExtra("hour1", ss[0]);
-          intent.putExtra("hour2", ss[1]);
-
-          startActivity(intent);
-        }
-      });
-
-      listAdapter.shown = false;
-      RecyclerView recyclerView = findViewById(R.id.listRVdate);
-      recyclerView.setHasFixedSize(true);
-      recyclerView.setLayoutManager(new LinearLayoutManager(this));
-      recyclerView.setAdapter(listAdapter);
-    }catch (Exception e){
-      System.out.println("FALOOOO");
-      e.printStackTrace();
     }
-  }
 
+    public void showActivities() {
+        try {
+            elements = new ArrayList<>();
 
+            List<ContentValues> infoList = ((DataManager) getApplication()).getByDate2(((DataManager) getApplication()).date2int(selectedDate));
+            for (int i = 0; i < infoList.size(); i++) {
+                ContentValues info = infoList.get(i);
+                String h = info.getAsString("hour1") + '-' + info.getAsString("hour2");
+                ListElement le = new ListElement("#775447", info.get("name").toString(), h, true, -1, "pesa1");
+
+                elements.add(le);
+                System.out.println(i);
+            }
+            ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(ListElement item) {
+                    Intent intent = new Intent(MainActivity.this, EventForm.class);
+                    intent.putExtra("SelectedDate", selectedDate);
+                    intent.putExtra("istolistonly", true);
+                    String s = item.desc;
+                    String[] ss = s.split("-");
+                    intent.putExtra("hour1", ss[0]);
+                    intent.putExtra("hour2", ss[1]);
+
+                    startActivity(intent);
+                }
+            });
+            listAdapter.shown = false;
+            RecyclerView recyclerView = findViewById(R.id.listRVdate);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(listAdapter);
+        } catch (Exception e) {
+            System.out.println("FALOOOO");
+            e.printStackTrace();
+        }
+    }
 }

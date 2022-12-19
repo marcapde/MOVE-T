@@ -22,11 +22,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public boolean shown = true;
 
     final ListAdapter.OnItemClickListener listener;
+
     public interface OnItemClickListener {
-      void onItemClick(ListElement item);
+        void onItemClick(ListElement item);
     }
 
-    public ListAdapter(List<ListElement> itemList, Context context, ListAdapter.OnItemClickListener listener){
+    public ListAdapter(List<ListElement> itemList, Context context, ListAdapter.OnItemClickListener listener) {
         this.mInfrater = LayoutInflater.from(context);
         this.context = context;
         this.mData = itemList;
@@ -34,45 +35,51 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     @Override
-    public int getItemCount(){return mData.size();}
+    public int getItemCount() {
+        return mData.size();
+    }
 
     @Override
-    public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = mInfrater.inflate(R.layout.list_element,null);
+    public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInfrater.inflate(R.layout.list_element, null);
         return new ListAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position){
+    public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position) {
         holder.bindData(mData.get(position));
     }
-    public void setItems(List<ListElement> items){mData = items;}
 
-    public List<Integer> getSelecteds(){
+    public void setItems(List<ListElement> items) {
+        mData = items;
+    }
+
+    public List<Integer> getSelecteds() {
         List<Integer> list = new ArrayList<Integer>();
 
         for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).isChecked()){
+            if (mData.get(i).isChecked()) {
                 list.add(mData.get(i).id);
             }
         }
         return list;
     }
 
-    public void cleanSelecteds(){
+    public void cleanSelecteds() {
         for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).isChecked()){
+            if (mData.get(i).isChecked()) {
                 mData.get(i).setChecked(false);
             }
         }
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iconImage;
-        TextView name,extra;
+        TextView name, extra;
         Switch checkSw;
         ImageView ivw;
 
-        ViewHolder(View itemView){
+        ViewHolder(View itemView) {
             super(itemView);
             iconImage = itemView.findViewById(R.id.iconImageView);
             name = itemView.findViewById(R.id.nameTextView);
@@ -84,7 +91,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         }
 
-        void bindData(final ListElement item){
+        void bindData(final ListElement item) {
             iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
             name.setText(item.getName());
             extra.setText(item.getDesc());
@@ -96,20 +103,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 }
             });
 
-            if(!shown)
-            {
+            if (!shown) {
                 checkSw.setVisibility(View.INVISIBLE);
                 checkSw.setClickable(false);
             }
-            ivw.setImageResource(itemView.getResources().getIdentifier(item.imgName,"drawable", itemView.getContext().getPackageName()));
+            ivw.setImageResource(itemView.getResources().getIdentifier(item.imgName, "drawable", itemView.getContext().getPackageName()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                listener.onItemClick(item);
-                //this is the new line
-                checkSw.setChecked(item.isChecked());
-              }
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(item);
+                    //this is the new line
+                    checkSw.setChecked(item.isChecked());
+                }
             });
         }
     }

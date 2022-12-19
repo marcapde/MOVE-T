@@ -1,78 +1,80 @@
 [
-    {
-      "id": 1,
-      "title": "Chest Workout",
-      "desc": "Chest Workout info",
-      "img": "chest"
-    },
-    {
-      "id": 2,
-      "title": "Quad Workout",
-      "desc": "Quad Workout info",
-      "img": "path/to/image"
-
-    },
-    {
-      "id": 3,
-      "title": "Biceps Workout",
-      "desc": "Biceps Workout info",
-      "img": "pesa1"
-    },
-    {
-      "id": 4,
-      "title": "Triceps Workout",
-      "desc": "Triceps Workout info",
-      "img": "path/to/image"
-    },
+  {
+    "id": 1,
+    "title": "Chest Workout",
+    "desc": "Get massive chest",
+    "img": "chest"
+  },
+  {
+    "id": 2,
+    "title": "Quad Workout",
+    "desc": "For those huge legs",
+    "img": "leg"
+  },
+  {
+    "id": 3,
+    "title": "Biceps Workout",
+    "desc": "Baloon biceps",
+    "img": "biceps1"
+  },
+  {
+    "id": 4,
+    "title": "Triceps Workout",
+    "desc": "Develop bigger arms",
+    "img": "triceps"
+  },
   {
     "id": 5,
-    "title": "Triceps Workout",
-    "desc": "Triceps Workout info",
-    "img": "path/to/image"
-  }
-,
+    "title": "Bank press Workout",
+    "desc": "Chest exercise",
+    "img": "press_banca"
+  },
   {
     "id": 6,
-    "title": "Triceps Workout",
-    "desc": "Triceps Workout info",
-    "img": "path/to/image"
+    "title": "Pushups",
+    "desc": "For chest and arms",
+    "img": "pushup"
   },
   {
     "id": 7,
-    "title": "Triceps Workout",
-    "desc": "Triceps Workout info",
-    "img": "path/to/image"
+    "title": "Squats",
+    "desc": "Big booty time",
+    "img": "squat"
+  },
+  {
+    "id": 8,
+    "title": "Trapezius Workout",
+    "desc": "F1 neck",
+    "img": "trapezius"
   },
   {
     "id": 9,
-    "title": "Triceps Workout",
-    "desc": "Triceps Workout info",
-    "img": "path/to/image"
+    "title": "Stepper",
+    "desc": "Burn calories to eat turron",
+    "img": "stepper1"
   },
   {
-    "id": 7,
-    "title": "Triceps Workout",
-    "desc": "Triceps Workout info",
-    "img": "path/to/image"
-  },  {
-  "id": 7,
-  "title": "Triceps Workout",
-  "desc": "Triceps Workout info",
-  "img": "path/to/image"
-},  {
-  "id": 7,
-  "title": "Triceps Workout",
-  "desc": "Triceps Workout info",
-  "img": "path/to/image"
-},  {
-  "id": 7,
-  "title": "Triceps Workout",
-  "desc": "Triceps Workout info",
-  "img": "path/to/image"
-},  {
-  "id": 7,
-  "title": "Triceps Workout",
-  "desc": "Triceps Workout info",
-  "img": "path/to/image"
-}
+    "id": 10,
+    "title": "Warmup",
+    "desc": "Warm me this",
+    "img": "warmup"
+  },
+  {
+    "id": 11,
+    "title": "Bench",
+    "desc": "Bench me this",
+    "img": "bench1"
+  },
+  {
+    "id": 12,
+    "title": "Crossfit",
+    "desc": "Full body workout",
+    "img": "crossfit1"
+  },
+  {
+    "id": 13,
+    "title": "Abs",
+    "desc": "Make your abs shine",
+    "img": "prelum1"
+  }
 ]
